@@ -15,6 +15,10 @@ public class AccountJdbcTemplateDaoImpl implements IAccountDao {
     @Autowired
     JdbcTemplate jt;
 
+    public void  findByxb(){
+        System.out.println("xxbbis");
+    }
+
     public List<Account> findAll() {
         return jt.query("select * from account",new BeanPropertyRowMapper<Account>(Account.class));
     }

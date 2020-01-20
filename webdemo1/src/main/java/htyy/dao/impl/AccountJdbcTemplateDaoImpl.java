@@ -14,6 +14,10 @@ public class AccountJdbcTemplateDaoImpl implements IAccountDao {
 
     @Autowired
     JdbcTemplate jt;
+    
+    public void  findByxb(){
+        System.out.println("这是服务器端坐的修改，代码位置已经和本地不一样，从底部到顶部，打印内容也变化了。");
+    }
 
     public List<Account> findAll() {
         return jt.query("select * from account",new BeanPropertyRowMapper<Account>(Account.class));
@@ -48,7 +52,5 @@ public class AccountJdbcTemplateDaoImpl implements IAccountDao {
         jt.update("delete from account where id=?",id);
     }
     
-    public void  findByxb(){
-        System.out.println("xxbbis");
-    }
+
 }

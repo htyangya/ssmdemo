@@ -40,6 +40,10 @@ public class AccountJdbcTemplateDaoImpl implements IAccountDao {
         jt.update("insert into account(name,money) values(?,?)",account.getName(),account.getMoney());
     }
 
+    public void  findBybendiadd(){
+        System.out.println("这是本地的新增，测试中间的代码能否被merge。");
+    }
+
     public void updateAcount(Account account) {
         jt.update("update account set name=?,money=? where id=?",account.getName(),account.getMoney(),account.getId());
     }
@@ -49,6 +53,6 @@ public class AccountJdbcTemplateDaoImpl implements IAccountDao {
     }
     
     public void  findByxb(){
-        System.out.println("xxbbis");
+        System.out.println("这是本地的修改，代码内容从英文变成中文。");
     }
 }

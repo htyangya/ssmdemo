@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+        <!DOCTYPE mapper
+                PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+                "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--注意：这里的namespace必须是相应dao的全限定类名，否则无法知道匹配的是哪个dao-->
+<mapper namespace="dao.IAccountDao">
+    <resultMap id="accountUserMap" type="domain.Account">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="money" column="money"/>
+        <!--一对一的关系映射 property指定封装到内部哪一个对象，javatype指定类名-->
+        <association property="user" javaType="domain.User"  >
+            <id property="id" column="user_id"/>
+            <result property="userName" column="userName"/>
+            <result property="birthday" column="birthday"/>
+            <result property="sex" column="sex"/>
+            <result property="address" column="address"/>
+        </association>
+    </resultMap>
+    <!--使用到一对一的关联对象时，自动根据select的语句发关联查询，在查询时一起发送1+n条sql语句。如果不配置懒加载，并不会延迟-->
+    <!--参数，column指外键列的列名，select是byid的语句，相当于select * from user where id=#{userid}。userid可以完全不在resultMap中体现。-->
+    <resultMap id="account_user_lazy" type="account">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="money" column="money"/>
+        <association property="user" javaType="user" column="userid" select="dao.IUserDao.findById"/>
+    </resultMap>
+
+<!--这里的dao里的id是方法名,如果方法有返回值，需要封装的话，需要通过resultType指定返回值类型-->
+    <select id="findAll" resultMap="accountUserMap">
+            select a.*,u.id user_id,u.address,u.birthday,u.sex,u.username from account a LEFT JOIN user u on a.userid=u.id
+    </select>
+    <select id="findAll_Lazy" resultMap="account_user_lazy">
+        select * from account
+    </select>
+    <!--占位符使用el表达式方式#{name}，el表达式的作用域方法传入的参数parameterType，属性名是get方法.注意ddl都需要commit-->
+    <!--selectKey三个属性分别表示属性名称，返回值类型，操作顺序，就是把select的结果注入到传入对象的id属性中去-->
+    <!--非自增随机赋予uuid型逐渐也可以获取，order="befor" 返回值string 语句写select replace(uuid(), '-', '')即可-->
+    <insert id="saveAccount" parameterType="domain.Account">
+        <selectKey  keyProperty="id" resultType="int" order="AFTER">
+            select last_insert_id()
+        </selectKey>
+        insert into account(name,money) values(#{name},#{money})
+    </insert>
+
+    <update id="updateAccount" parameterType="domain.Account">
+        update account set name=#{name},money=#{money} where id=#{id}
+    </update>
+
+    <!--参数只有一个的情况下，占位符叫id或uid，可以随便取，它将按照类型获取值，类似autowire-->
+    <delete id="deleteAccount" parameterType="int">
+        delete from account where id=#{id}
+    </delete>
+
+    <select id="findAccountById" parameterType="int" resultType="domain.Account">
+        select * from account where id=#{id}
+    </select>
+
+    <!--模糊查询时，可以写${value}的形式，这样可以拼接其他字符串，如%${value}%,这种形式中value的值是固定的，只能写value-->
+    <select id="findAccountByName" parameterType="string" resultType="domain.Account">
+        select * from account where name like #{name}
+    </select>
+
+    <select id="findTotal" resultType="int">
+        select count(id) from account
+    </select>
+    <!--if test语句内可以不写#{}取得属性，但需要严格注意大小写，如果test为真，if内语句就会拼接到上面的select语句执行。可以使用!= == and or 等运算符-->
+    <select id="findAccountByCondition"  parameterType="domain.Account" resultType="domain.Account">
+        select * from account
+        <where>
+            <if test="id != null">
+                and id =#{id}
+            </if>
+            <if test="name != null">
+                and name like #{name}
+            </if>
+            <if test="money != null">
+                and money = #{money }
+            </if>
+        </where>
+    </select>
+
+    <!--<select id="findAccountByIdInIds" parameterType="queryVo" resultType="domain.Account">-->
+        <!--select * from account-->
+        <!--<where>-->
+            <!--<foreach collection="ids" open="and id in (" close=")" item="uid" separator=",">-->
+                <!--#{uid}-->
+            <!--</foreach>-->
+        <!--</where>-->
+    <!--</select>-->
+
+</mapper>

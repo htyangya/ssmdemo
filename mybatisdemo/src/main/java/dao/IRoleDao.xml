@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+        <!DOCTYPE mapper
+                PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+                "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--注意：这里的namespace必须是相应dao的全限定类名，否则无法知道匹配的是哪个dao-->
+<mapper namespace="dao.IRoleDao">
+    <sql id="unionSelectAll">
+        select r.*,u.* from `user` u
+        RIGHT JOIN user_role ur on u.id=ur.uid
+        RIGHT JOIN role r on r.roleId=ur.rid
+    </sql>
+    <!--返回值映射书写原则全都一样，定义好类属性和子字段的类属性即可，列名必须和sql查询出的一致，要点是sql联合查询能够查询出需要封装的属性-->
+    <resultMap id="roleMap" type="domain.Role">
+            <id property="roleId" column="roleId"/>
+            <result property="roleName" column="roleName"/>
+            <result property="roleDesc" column="roleDesc"/>
+        <collection property="users" ofType="domain.User">
+            <id property="id" column="id"/>
+            <result property="userName" column="userName"/>
+            <result property="birthday" column="birthday"/>
+            <result property="sex" column="sex"/>
+            <result property="address" column="address"/>
+        </collection>
+    </resultMap>
+
+    <select id="findAll" resultMap="roleMap">
+        <include refid="unionSelectAll"/>
+    </select>
+
+
+</mapper>

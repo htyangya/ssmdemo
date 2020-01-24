@@ -1,19 +1,21 @@
 package htyy.dao;
 
 import htyy.domain.Account;
+import org.apache.ibatis.annotations.Select;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Repository
 public interface IAccountDao {
+
+    @Select("select * from account")
     List<Account> findAll();
 
+    @Select("select * from account where id=#{id}")
     Account findAcountById(Integer id);
 
-    /**
-     *
-     * @param name 账户名称
-     * @return 若结果集不存在，返回null；若结果不唯一，报错。
-     */
+    @Select("select * from account where name=#{name}")
     Account findAccountByname(String name);
 
     void saveAcount(Account account);

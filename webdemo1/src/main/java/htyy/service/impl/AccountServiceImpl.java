@@ -1,5 +1,6 @@
 package htyy.service.impl;
 
+import com.github.pagehelper.PageHelper;
 import htyy.dao.IAccountDao;
 import htyy.domain.Account;
 import htyy.service.IAccountService;
@@ -22,6 +23,7 @@ public class AccountServiceImpl implements IAccountService {
     }
 
     public List<Account> findAll() {
+        PageHelper.startPage(1,5);
         return accountDao.findAll();
     }
 

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="domain.User" table="user" batch-size="20">
+        <id name="id" column="id">
+            <generator class="native"/>
+        </id>
+        <!--如果name和column完全一致，后者可以省略-->
+        <property name="userName" column="username"/>
+        <property name="birthday" />
+        <property name="sex" />
+        <property name="address" />
+        <!--集合配置，里面肯定都是to-many的标签，name属性名、class属性类、key.column是对方表的外键，写上后可以操作其外键。-->
+        <set name="accounts" cascade="save-update,delete" inverse="true">
+            <key column="userid"></key>
+            <one-to-many class="domain.Account"/>
+        </set>
+
+        <!--和普通的一对多不同，这里的key.column是中间表中关联我方的外键。m2m中的c是对方的关联外键-->
+        <set name="roles" table="user_role" cascade="save-update">
+            <key column="uid"/>
+            <many-to-many class="domain.Role" column="rid"/>
+        </set>
+    </class>
+</hibernate-mapping>

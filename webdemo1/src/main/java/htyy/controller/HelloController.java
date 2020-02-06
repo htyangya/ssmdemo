@@ -1,5 +1,6 @@
 package htyy.controller;
 
+import com.github.pagehelper.PageInfo;
 import htyy.domain.Account;
 import htyy.service.IAccountService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,9 +65,10 @@ public class HelloController {
     public ModelAndView testxx(@PathVariable("sid") Integer mit){
         System.out.println(mit);
         ModelAndView view = new ModelAndView();
-        List<Account> accountList = service.findAll();
+        PageInfo<Account> accountList = new PageInfo<>(service.findAll());
         view.addObject("allAccount", accountList);
         System.out.println(accountList);
+        System.out.println(accountList.getList());
         view.setViewName("success");
         return view;
     }

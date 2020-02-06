@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="domain.Role" table="role">
+        <id name="roleId">
+            <generator class="native"/>
+        </id>
+        <!--如果name和column完全一致，后者可以省略-->
+        <property name="roleName" />
+        <property name="roleDesc" />
+        <!---->
+        <set name="users" table="user_role" inverse="true">
+            <key column="rid"></key>
+            <many-to-many class="domain.User" column="uid"/>
+        </set>
+    </class>
+</hibernate-mapping>

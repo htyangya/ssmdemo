@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="domain.Account" table="account">
+        <id name="id" column="id">
+            <generator class="native"/>
+        </id>
+        <!--如果name和column完全一致，后者可以省略-->
+        <property name="name" column="name"/>
+        <property name="money" column="money"/>
+        <!--<property name="userid" column="userid"/>-->
+        <!--to-one标签，name属性名，class属性类型，column本表外键名称-->
+        <many-to-one name="user" class="domain.User" column="userid" cascade="save-update"/>
+    </class>
+</hibernate-mapping>

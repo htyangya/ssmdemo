@@ -43,6 +43,18 @@
                 <property name="aggressiveLazyLoading" value="false"/>
             </bean>
         </property>
+        <property name="plugins">
+            <array>
+                <bean class="com.github.pagehelper.PageInterceptor">
+                    <property name="properties">
+                        <props>
+                            <prop key="helperDialect">mysql</prop>
+                            <prop key="reasonable">true</prop>
+                        </props>
+                    </property>
+                </bean>
+            </array>
+        </property>
         <!--引入原始的配置文件-->
         <!--<property name="configLocation" value="mybatis.xml"/>-->
         <!-- 当mybatis的xml文件和mapper接口不在相同包下时，需要用mapperLocations属性指定xml文件的路径。

@@ -1,4 +1,4 @@
-import domain.Account;
+﻿import domain.Account;
 import domain.User;
 import org.hibernate.Criteria;
 import org.hibernate.Session;

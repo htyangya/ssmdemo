@@ -1,7 +1,9 @@
 package domain;
 
-import org.hibernate.annotations.*;
-import org.hibernate.annotations.CascadeType;
+
+
+
+import org.hibernate.annotations.Cascade;
 
 import javax.annotation.Generated;
 import javax.persistence.*;
@@ -20,13 +22,11 @@ public class User {
     private String sex;
     private String address;
 
-    @OneToMany(fetch = FetchType.LAZY,mappedBy = "user")
-    @Cascade({CascadeType.DELETE,CascadeType.SAVE_UPDATE})
+    @OneToMany(fetch = FetchType.LAZY,mappedBy = "user",cascade = CascadeType.ALL)
     private Set<Account> accounts =new HashSet<Account>();
 
-    @ManyToMany()
+    @ManyToMany(cascade = {CascadeType.PERSIST,CascadeType.MERGE})
     @JoinTable(name="user_role",joinColumns = @JoinColumn(name = "uid"),inverseJoinColumns = @JoinColumn(name = "rid"))
-    @Cascade({CascadeType.SAVE_UPDATE})
     private Set<Role> roles=new HashSet<Role>();
 
     public User() {

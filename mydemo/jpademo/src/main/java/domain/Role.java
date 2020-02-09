@@ -2,7 +2,6 @@ package domain;
 
 
 import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -16,8 +15,7 @@ public class Role {
     private String roleName;
     private  String roleDesc;
 
-    @ManyToMany(mappedBy = "roles")
-    @Cascade({CascadeType.SAVE_UPDATE})
+    @ManyToMany(mappedBy = "roles" , cascade = {javax.persistence.CascadeType.PERSIST, CascadeType.MERGE})
     private Set<User> users=new HashSet<User>();
 
     public Integer getRoleId() {

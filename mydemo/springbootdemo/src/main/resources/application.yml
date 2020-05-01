@@ -1,0 +1,32 @@
+spring:
+  datasource:
+    url: jdbc:mysql:///test
+    data-username: root
+    data-password: JIANGkui1
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+
+#配置数组
+city:
+  - chongqin
+  - shanghai
+  - guiyang
+#city: [chongqing,shanghai,guiyang]
+
+#配置对象数组
+student:
+  - name: tom
+    age: 18
+    city: guiyang
+  - name: tony
+    age: 21
+    city: shanghai
+#student: [{name: tom,age: 18,addr: guiyang}]
+
+#配置map
+mymap:
+  key1: value1
+  key2: value2
+
+#行内对象配置
+person: {name: zhangsan,age: 22,city: 贵阳}
+
